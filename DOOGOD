@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscar Mascota</title>
+    <script>
+        function buscarMascota() {
+            let codigo = document.getElementById("codigo").value;
+            if (codigo === "") {
+                alert("Por favor ingresa un código");
+                return;
+            }
+            
+            fetch("https://script.google.com/macros/s/AKfycbzV64HIhdfzKGIGmRpvCVp4_PG_prKhMKxmvGyBihjx-Uw-rqLLwOsbRQT81kCfHsKLvA/exec?codigo=" + codigo)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        document.getElementById("resultado").innerHTML = `
+                            <h3>Mascota Encontrada</h3>
+                            <p><strong>Nombre:</strong> ${data.nombre}</p>
+                            <p><strong>Raza:</strong> ${data.raza}</p>
+                            <p><strong>Edad:</strong> ${data.edad}</p>
+                            <p><strong>Dueño:</strong> ${data.dueno}</p>
+                            <p><strong>Teléfono:</strong> ${data.telefono}</p>
+                            <p><strong>Email:</strong> ${data.email}</p>
+                        `;
+                    } else {
+                        document.getElementById("resultado").innerHTML = "<p style='color:red;'>Código no encontrado</p>";
+                    }
+                })
+                .catch(error => console.error("Error:", error));
+        }
+    </script>
+</head>
+<body>
+    <h2>Buscar Información de Mascota</h2>
+    <input type="text" id="codigo" placeholder="Ingrese el código único">
+    <button onclick="buscarMascota()">Buscar</button>
+    <div id="resultado"></div>
+</body>
+</html>
